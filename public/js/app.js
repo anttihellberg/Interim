@@ -2,13 +2,39 @@
 function showToast(message, isError = false) {
   const toastEl = document.getElementById('toast');
   const toastMessage = document.getElementById('toastMessage');
-  const toast = new bootstrap.Toast(toastEl);
   
-  toastMessage.textContent = message;
-  toastEl.classList.toggle('bg-danger', isError);
-  toastEl.classList.toggle('text-white', isError);
-  
-  toast.show();
+  // Check if Bootstrap is available
+  if (typeof bootstrap !== 'undefined') {
+    const toast = new bootstrap.Toast(toastEl);
+    toastMessage.textContent = message;
+    toastEl.classList.toggle('bg-danger', isError);
+    toastEl.classList.toggle('text-white', isError);
+    toast.show();
+  } else {
+    // Fallback to console log if Bootstrap is not loaded
+    console.log(isError ? 'Error: ' + message : message);
+  }
+}
+
+// Update stats dynamically
+async function updateStats() {
+  try {
+    const response = await fetch('/api/products');
+    const products = await response.json();
+    
+    const totalProducts = products.length;
+    const totalStock = products.reduce((sum, p) => sum + p.quantity, 0);
+    const inventoryValue = products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+    
+    const statsCards = document.querySelectorAll('.stats-card h3');
+    if (statsCards.length >= 3) {
+      statsCards[0].textContent = totalProducts;
+      statsCards[1].textContent = totalStock;
+      statsCards[2].textContent = '$' + inventoryValue.toFixed(2);
+    }
+  } catch (error) {
+    console.error('Error updating stats:', error);
+  }
 }
 
 // Update quantity
@@ -41,8 +67,8 @@ async function updateQuantity(id, newQuantity) {
       badge.classList.add('bg-danger');
     }
 
-    // Reload page to update stats
-    setTimeout(() => window.location.reload(), 500);
+    // Update stats without full page reload
+    updateStats();
 
     showToast('Quantity updated successfully');
   } catch (error) {
@@ -68,12 +94,13 @@ async function deleteProduct(id) {
 
     // Remove card from DOM with animation
     const card = document.querySelector(`[data-product-id="${id}"]`);
+    card.style.transition = 'all 0.3s ease';
     card.style.opacity = '0';
     card.style.transform = 'scale(0.9)';
     
     setTimeout(() => {
       card.remove();
-      window.location.reload(); // Reload to update stats
+      updateStats(); // Update stats without full reload
     }, 300);
 
     showToast('Watch deleted successfully');
@@ -113,8 +140,10 @@ document.getElementById('saveProductBtn')?.addEventListener('click', async () =>
     showToast('Watch added successfully');
     
     // Close modal and reset form
-    const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
-    modal.hide();
+    if (typeof bootstrap !== 'undefined') {
+      const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+      if (modal) modal.hide();
+    }
     form.reset();
 
     // Reload page to show new product
