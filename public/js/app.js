@@ -200,3 +200,15 @@ document.addEventListener('change', (e) => {
 document.getElementById('addProductForm')?.addEventListener('submit', (e) => {
   e.preventDefault();
 });
+
+// Confetti button handler
+document.getElementById('confettiBtn')?.addEventListener('click', () => {
+  // Check if confetti library is available
+  if (typeof confetti !== 'undefined') {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+});
