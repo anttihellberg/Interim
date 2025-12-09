@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanical Watch Inventory</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⌚ Mechanical Watch Inventory</h1>
+            <p class="subtitle">Luxury Timepiece Collection Management</p>
+        </header>
+
+        <div class="actions">
+            <button id="addWatchBtn" class="btn btn-primary">+ Add New Watch</button>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search watches...">
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalWatches">0</div>
+                <div class="stat-label">Total Watches</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalQuantity">0</div>
+                <div class="stat-label">Total Stock</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalValue">$0</div>
+                <div class="stat-label">Inventory Value</div>
+            </div>
+        </div>
+
+        <div id="watchesGrid" class="watches-grid">
+            <!-- Watches will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Add/Edit Watch Modal -->
+    <div id="watchModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Add New Watch</h2>
+            <form id="watchForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="brand">Brand *</label>
+                        <input type="text" id="brand" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model *</label>
+                        <input type="text" id="model" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="movement">Movement Type *</label>
+                        <select id="movement" required>
+                            <option value="">Select Movement</option>
+                            <option value="Automatic">Automatic</option>
+                            <option value="Manual">Manual</option>
+                            <option value="Spring Drive">Spring Drive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="caseMaterial">Case Material *</label>
+                        <select id="caseMaterial" required>
+                            <option value="">Select Material</option>
+                            <option value="Stainless Steel">Stainless Steel</option>
+                            <option value="Titanium">Titanium</option>
+                            <option value="Yellow Gold">Yellow Gold</option>
+                            <option value="Rose Gold">Rose Gold</option>
+                            <option value="White Gold">White Gold</option>
+                            <option value="Platinum">Platinum</option>
+                            <option value="Bronze">Bronze</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dialColor">Dial Color *</label>
+                        <input type="text" id="dialColor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price ($) *</label>
+                        <input type="number" id="price" step="0.01" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quantity">Quantity *</label>
+                        <input type="number" id="quantity" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageUrl">Image URL</label>
+                        <input type="text" id="imageUrl">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" rows="3"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Watch</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
